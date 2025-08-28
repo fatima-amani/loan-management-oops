@@ -1,27 +1,20 @@
+import annotations.AuditLog;
 import exceptions.LoanException;
-import loans.AuditLog;
-import loans.HomeLoan;
-import loans.LoanApplication;
-import loans.PersonalLoan;
-import loans.enums.LoanStatus;
-import loans.enums.LoanType;
+import loans.*;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
     static void printAnnotatedClass(Class myClass) {
-        System.out.println("Class: "+myClass.getName()+" has annotated method: ");
+        System.out.println("Class: " + myClass.getName() + " has annotated method: ");
 
         Method[] methods = myClass.getDeclaredMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(AuditLog.class)) {
-                System.out.print(method.getName()+" ");
+                System.out.print(method.getName() + " ");
             }
         }
         System.out.println("\n");
@@ -36,41 +29,28 @@ public class Main {
         printAnnotatedClass(HomeLoan.class);
 
         HomeLoan homeLoan1 = new HomeLoan("Fatima", 500000f);
-        System.out.println();
+        PersonalLoan personalLoan1 = new PersonalLoan("Fatima", 1000f);
 
-        System.out.println(homeLoan1);
-        System.out.println();
+        LoanProcessor loanProcessor = (loanApplication) -> {
+            try{
+                loanApplication.apply();
+                System.out.println();
+                loanApplication.validateApplication();
+                System.out.println();
+                loanApplication.evaluateRisk();
+                System.out.println();
+                System.out.println(loanApplication);
+            } catch(LoanException loanException){
+                System.out.println("Error: "+loanException.getMessage());
+            }
 
-        homeLoan1.apply();
-        System.out.println();
+        };
 
-        homeLoan1.validateApplication();
-        System.out.println();
 
-        homeLoan1.evaluateRisk();
-        System.out.println();
+        loanProcessor.process(homeLoan1);
+        loanProcessor.process(personalLoan1);
 
-        System.out.println(homeLoan1);
-        System.out.println();
-
-        PersonalLoan personalLoan1 = new PersonalLoan("Fatima", 5000f);
-        System.out.println();
-
-        System.out.println(personalLoan1);
-        System.out.println();
-
-        personalLoan1.apply();
-        System.out.println();
-
-        personalLoan1.validateApplication();
-        System.out.println();
-
-        personalLoan1.evaluateRisk();
-        System.out.println();
-
-        System.out.println(personalLoan1);
-        System.out.println();
-
+        LoanApplication.printProcessedApplications();
 
     }
 }

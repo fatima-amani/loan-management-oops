@@ -4,18 +4,23 @@ import exceptions.LoanException;
 import loans.enums.LoanStatus;
 import loans.enums.LoanType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class LoanApplication {
-    static Integer counter;
-    static Map<LoanType, List<LoanApplication>> processedApplication;
+    private static Integer counter;
+    private static final Map<LoanType, List<LoanApplication>> processedApplication;
 
     static {
         counter = 0;
-        System.out.println("SmartLoan System initialized");
+        System.out.println("\n ------SmartLoan System initialized ----- \n");
         processedApplication = new HashMap<LoanType, List<LoanApplication>>();
+        for (LoanType loanType : LoanType.values()) {
+            List<LoanApplication> loanApplications = new ArrayList<LoanApplication>();
+            processedApplication.put(loanType, loanApplications);
+        }
     }
 
     Integer applicationId;
@@ -29,9 +34,30 @@ public abstract class LoanApplication {
         this.customerName = customerName;
         this.amount = amount;
         this.loanType = loanType;
+        this.loanStatus = null;
     }
 
-    abstract boolean validateApplication() throws LoanException;
+    public static void printProcessedApplications() {
+        System.out.println("\n----- Processed Applications: ------");
+        for (Map.Entry<LoanType, List<LoanApplication>> entry : processedApplication.entrySet()) {
+            System.out.println("Loan Type: " + entry.getKey());
+            if(entry.getValue().isEmpty()){
+                System.out.println("No Processed Application Under this category");
+            }
+            for (LoanApplication app : entry.getValue()) {
+                System.out.println(app);
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    protected static void addProcessedApplication(LoanType loanType, LoanApplication loanApplication) {
+        List<LoanApplication> list=processedApplication.get(loanType);
+        list.add(loanApplication);
+    }
+
+    public abstract boolean validateApplication() throws LoanException;
 
     public void apply(){
         System.out.println("ID: "+applicationId+" successfully applied for "+this.loanType+" loan");
@@ -48,23 +74,9 @@ public abstract class LoanApplication {
         return str;
     }
 
-    static <T extends LoanApplication> void printProcessedApplications() {
-        System.out.println("Processed Applications: ");
-        for (Map.Entry<LoanType, List<LoanApplication>> entry : processedApplication.entrySet()) {
-            System.out.println("Loan Type: " + entry.getKey());
-            for (LoanApplication app : entry.getValue()) {
-                System.out.println(app);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     public void printLoanApplication(){
         System.out.println(this);
     }
 
-
-
-
+    public abstract LoanStatus evaluateRisk();
 }

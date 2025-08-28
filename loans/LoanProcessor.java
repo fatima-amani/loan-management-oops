@@ -3,6 +3,6 @@ package loans;
 import exceptions.LoanException;
 
 @FunctionalInterface
-interface LoanProcessor {
+public interface LoanProcessor {
     void process(LoanApplication app) throws LoanException;
 }

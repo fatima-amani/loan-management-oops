@@ -2,10 +2,14 @@ package loans;
 
 import loans.enums.LoanStatus;
 
-public interface Approvable {
+interface Approvable {
     LoanStatus evaluateRisk();
 
-    default void printDecision() {
-        System.out.println("Your Loan is "+this.evaluateRisk());
+    default void printDecision(int applicationId, boolean approved) {
+        if (approved) {
+            System.out.println("Application ID: " + applicationId + " Validated Successfully !!");
+        } else {
+            System.out.println("Application ID: " + applicationId + " Validation Failed !!");
+        }
     }
 }
