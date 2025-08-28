@@ -1,5 +1,6 @@
 package loans;
 
+import exceptions.LoanException;
 import loans.enums.LoanStatus;
 import loans.enums.LoanType;
 
@@ -19,7 +20,10 @@ public class HomeLoan extends LoanApplication implements Approvable{
     }
 
     @Override
-    boolean validateApplication() {
-        return loanStatus==LoanStatus.APPROVED;
+    boolean validateApplication() throws LoanException {
+        if(loanStatus == LoanStatus.APPROVED) {
+            return true;
+        }
+        throw new LoanException("Request Rejected !!");
     }
 }

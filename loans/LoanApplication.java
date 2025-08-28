@@ -1,5 +1,6 @@
 package loans;
 
+import exceptions.LoanException;
 import loans.enums.LoanStatus;
 import loans.enums.LoanType;
 
@@ -25,7 +26,7 @@ public abstract class LoanApplication {
         this.loanStatus = loanStatus;
     }
 
-    abstract boolean validateApplication();
+    abstract boolean validateApplication() throws LoanException;
 
     void apply(){
         loanStatus=LoanStatus.PENDING;
