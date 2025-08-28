@@ -24,17 +24,17 @@ public abstract class LoanApplication {
     LoanType loanType;
     LoanStatus loanStatus;
 
-    public LoanApplication(String customerName, Float amount, LoanType loanType, LoanStatus loanStatus) {
+    public LoanApplication(String customerName, Float amount, LoanType loanType) {
         this.applicationId = ++counter;
         this.customerName = customerName;
         this.amount = amount;
         this.loanType = loanType;
-        this.loanStatus = loanStatus;
     }
 
     abstract boolean validateApplication() throws LoanException;
 
-    void apply(){
+    public void apply(){
+        System.out.println("ID: "+applicationId+" successfully applied for "+this.loanType+" loan");
         loanStatus=LoanStatus.PENDING;
     }
 

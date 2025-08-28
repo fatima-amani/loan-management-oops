@@ -1,7 +1,9 @@
+import exceptions.LoanException;
 import loans.AuditLog;
 import loans.HomeLoan;
 import loans.LoanApplication;
 import loans.PersonalLoan;
+import loans.enums.LoanStatus;
 import loans.enums.LoanType;
 
 import java.lang.reflect.Method;
@@ -25,13 +27,50 @@ public class Main {
         System.out.println("\n");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LoanException {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
         System.out.println("Hello and welcome to Smart Loan Processing App !! \n\n");
 
         printAnnotatedClass(PersonalLoan.class);
         printAnnotatedClass(HomeLoan.class);
+
+        HomeLoan homeLoan1 = new HomeLoan("Fatima", 500000f);
+        System.out.println();
+
+        System.out.println(homeLoan1);
+        System.out.println();
+
+        homeLoan1.apply();
+        System.out.println();
+
+        homeLoan1.validateApplication();
+        System.out.println();
+
+        homeLoan1.evaluateRisk();
+        System.out.println();
+
+        System.out.println(homeLoan1);
+        System.out.println();
+
+        PersonalLoan personalLoan1 = new PersonalLoan("Fatima", 5000f);
+        System.out.println();
+
+        System.out.println(personalLoan1);
+        System.out.println();
+
+        personalLoan1.apply();
+        System.out.println();
+
+        personalLoan1.validateApplication();
+        System.out.println();
+
+        personalLoan1.evaluateRisk();
+        System.out.println();
+
+        System.out.println(personalLoan1);
+        System.out.println();
+
 
     }
 }
