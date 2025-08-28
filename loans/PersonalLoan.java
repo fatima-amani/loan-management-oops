@@ -11,6 +11,7 @@ public class PersonalLoan extends LoanApplication implements Approvable{
     }
 
     @Override
+    @AuditLog
     public LoanStatus evaluateRisk() {
         if(amount > 500000) {
             loanStatus=LoanStatus.REJECTED;
